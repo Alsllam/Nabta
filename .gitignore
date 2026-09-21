@@ -1,0 +1,49 @@
+# The repository is the first safety layer: what may never be committed is refused
+# here, before any review happens. Ignoring a tool's cache below is hygiene, not a
+# technology decision — no ADR is implied by any line in this file.
+
+# ── Secrets (CLAUDE.md: no secrets in git) ───────────────────────────────────
+# Real keys live in .env at the repo root and are read ONLY inside lab/ scripts.
+# The committed, key-less interface is .env.example.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ── Audio & recordings (charter G10: recordings are ephemeral) ───────────────
+# A child's voice is scored, then purged — it never enters git, in any folder.
+# Lab audio (the developer's own voice, consented adults) stays local too.
+*.wav
+*.mp3
+*.m4a
+*.ogg
+*.flac
+*.webm
+recordings/
+
+# ── Lab outputs ──────────────────────────────────────────────────────────────
+# Results live in each experiment's README table; raw outputs stay in out/,
+# local. A small output worth sharing is added deliberately:
+#   git add -f lab/<step-id>-<slug>/out/<file>
+lab/*/out/
+lab/*/.tmp/
+
+# ── Docs pipeline scratch ────────────────────────────────────────────────────
+# render-diagrams.py works in a .tmp/ folder beside the documents (0.6 gotcha).
+docs/deliverables/.tmp/
+
+# ── Tool caches & local environments ─────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+
+# ── OS & editor noise ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/

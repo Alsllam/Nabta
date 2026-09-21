@@ -1,0 +1,23 @@
+# Line endings: store LF in history for everything git detects as text (`text=auto`),
+# and pin the exceptions explicitly. Without this, a Windows checkout and a Linux
+# checkout of the same file can differ byte-for-byte and pollute every diff.
+* text=auto
+
+# Prose, data and scripts: LF in history and in the working tree.
+*.md   text eol=lf
+*.json text eol=lf
+*.py   text eol=lf
+*.lua  text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+
+# PowerShell is Windows-native: CRLF in the working tree (LF in history is fine,
+# but legacy hosts read CRLF most reliably).
+*.ps1  text eol=crlf
+
+# Binary artefacts: never end-of-line converted, never diffed or merged as text.
+*.docx binary
+*.png  binary
+*.jpg  binary
+*.wav  binary
+*.mp3  binary

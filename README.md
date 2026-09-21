@@ -13,7 +13,7 @@ built in Phases 6–9 on those decisions.
 | --- | --- | --- |
 | `docs/` | Plan, deliverables (Vision, Pedagogy, SRS, Study Notes, Architecture…), curriculum seed, learning notes, ADRs | Phase 0 |
 | `lab/` | One folder per study experiment: hypothesis, method, results, what it means for Nabta | Phase 1 |
-| *(product folders)* | Named and created after the Phase 5 stack decision | Phase 6 |
+| `core/` · `child-app/` · `web/` | Product placeholders (names provisional); filled after the Phase 5 stack decision | Phase 6 |
 
 Start here: [docs/PLAN.md](docs/PLAN.md) → [ROADMAP.md](ROADMAP.md) → `docs/deliverables/out/*.docx`.
 
