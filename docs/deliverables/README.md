@@ -30,4 +30,5 @@ revision-history table.
 - `smoke.md` is the pipeline's smoke test; re-render it after touching the template.
 - Diagrams: write Mermaid in a fence directly under its `![caption](assets/name.png)` line and
   run `python docs/deliverables/_template/render-diagrams.py <key>` before `build.ps1`
-  (uses `npx @mermaid-js/mermaid-cli`; the source stays in the `.md`, the PNG is what Word shows).
+  (uses `npx @mermaid-js/mermaid-cli`; the source stays in the `.md`, the PNG is what Word shows —
+  `_template/drop-mermaid.lua` removes the source block from the `.docx`).

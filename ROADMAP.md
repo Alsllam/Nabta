@@ -47,7 +47,7 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
       (`FR-CUR`, `FR-LRN`, `FR-TUT`, `FR-CNT`, `FR-SPC`, `FR-RPT`, `FR-AI`), NFR (child safety,
       privacy, offline, latency budgets, i18n/RTL, accessibility, cost per session), glossary ar/en.
       *Topics: testable requirement wording; latency and cost as requirements the study must meet.*
-- [ ] **0.6 Capability architecture v0.1** — `architecture.md` with PLAN §6 as the container
+- [x] **0.6 Capability architecture v0.1** — `architecture.md` with PLAN §6 as the container
       view (capabilities, no products), the module rules, the event map, and three key flows
       (daily session, story generation, read-aloud scoring). Marked *products decided in Phase 5*.
       *Topics: designing to capabilities and contracts before choosing tools.*

@@ -28,6 +28,7 @@ foreach ($k in $keys) {
         $src, '-o', $dst,
         '--from', 'markdown+yaml_metadata_block+fenced_divs',   # front matter -> title page; ::: divs -> custom styles
         '--reference-doc', (Join-Path $PSScriptRoot 'reference.docx'),
+        '--lua-filter', (Join-Path $PSScriptRoot 'drop-mermaid.lua'),   # Word shows the PNG, not the Mermaid source
         '--resource-path', $root,          # images referenced as assets/x.png resolve
         '--toc', '--toc-depth', '3',
         '--number-sections'                # stable section numbers = citable IDs
