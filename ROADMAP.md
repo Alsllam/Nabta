@@ -43,7 +43,7 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
       parameters, the two story kinds and their brief, template stories, the parent-facing
       progress view, glossary ar/en. *Topics: curriculum design; explainability as a contract;
       writing pedagogy that a scheduler can execute.*
-- [ ] **0.5 SRS v0.1** — actors, UC-01…UC-10 with pre/post conditions, FR per capability
+- [x] **0.5 SRS v0.1** — actors, UC-01…UC-10 with pre/post conditions, FR per capability
       (`FR-CUR`, `FR-LRN`, `FR-TUT`, `FR-CNT`, `FR-SPC`, `FR-RPT`, `FR-AI`), NFR (child safety,
       privacy, offline, latency budgets, i18n/RTL, accessibility, cost per session), glossary ar/en.
       *Topics: testable requirement wording; latency and cost as requirements the study must meet.*
