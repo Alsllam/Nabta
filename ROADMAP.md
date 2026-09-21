@@ -19,7 +19,7 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
       `lab/TEMPLATE/` (README with hypothesis · method · results table · "what this means for
       Nabta"); `docs/decisions/README.md`; first commit. *Topics: reusing a way of working
       without reusing its technology; experiment template.*
-- [ ] **0.2 Docs pipeline** — copy `docs/deliverables/_template/` (reference `.docx`, build and
+- [x] **0.2 Docs pipeline** — copy `docs/deliverables/_template/` (reference `.docx`, build and
       diagram scripts) and `deliverables/README.md` from Wathiq; render a smoke doc with Arabic
       RTL text. *Topics: the Markdown → Word pipeline (a documents tool, not a stack choice).*
 - [ ] **0.3 Vision & Charter doc** — `docs/deliverables/vision.md` → `.docx`: problem, users,
