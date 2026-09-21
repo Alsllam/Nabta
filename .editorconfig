@@ -1,21 +1,28 @@
-# EditorConfig — editor-agnostic formatting rules, read natively by every major
-# editor and IDE (https://editorconfig.org). Hygiene, not a stack choice: the same
-# file works whatever the lab runtime (1.1) or the product stack (Phase 5) turn out to be.
+# EditorConfig — https://editorconfig.org
+# One convention for every file type in the repo, whatever the stack turns out to be.
 root = true
 
 [*]
-charset = utf-8              # Arabic everywhere; UTF-8 (no BOM) is the one encoding every tool agrees on
-end_of_line = lf             # one canonical line ending in history — see .gitattributes
+charset = utf-8
+end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
 
-[*.py]
-indent_size = 4              # PEP 8; matches lab/0.4-skill-graph/check_graph.py
-
 [*.md]
-trim_trailing_whitespace = false   # two trailing spaces are a hard line break in Markdown
+# Two trailing spaces are a hard line break in Markdown; keep them.
+trim_trailing_whitespace = false
+max_line_length = 100
 
-[*.ps1]
-end_of_line = crlf           # Windows-native scripts keep CRLF in the working tree
+[*.{py,ps1}]
+indent_size = 4
+
+[*.json]
+indent_size = 2
+
+[*.{docx,png,jpg,wav,mp3,m4a,ogg}]
+# Binary: no text rules apply.
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset

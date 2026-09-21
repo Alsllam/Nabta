@@ -1,19 +1,16 @@
-# The repository is the first safety layer: what may never be committed is refused
-# here, before any review happens. Ignoring a tool's cache below is hygiene, not a
-# technology decision — no ADR is implied by any line in this file.
+# Nabta — what never enters git.
+# Some of these lines are privacy boundaries, not tidiness: recordings are ephemeral by
+# principle (P6), keys never leave the machine, lab outputs may contain provider responses.
 
-# ── Secrets (CLAUDE.md: no secrets in git) ───────────────────────────────────
-# Real keys live in .env at the repo root and are read ONLY inside lab/ scripts.
-# The committed, key-less interface is .env.example.
+# Secrets — keys are read only inside lab/ from environment variables
 .env
 .env.*
 !.env.example
 *.pem
 *.key
 
-# ── Audio & recordings (charter G10: recordings are ephemeral) ───────────────
-# A child's voice is scored, then purged — it never enters git, in any folder.
-# Lab audio (the developer's own voice, consented adults) stays local too.
+# Audio and recordings — never committed (consented samples an experiment keeps are the
+# documented exception, added with `git add -f` and named in that experiment's README)
 *.wav
 *.mp3
 *.m4a
@@ -22,28 +19,28 @@
 *.webm
 recordings/
 
-# ── Lab outputs ──────────────────────────────────────────────────────────────
-# Results live in each experiment's README table; raw outputs stay in out/,
-# local. A small output worth sharing is added deliberately:
-#   git add -f lab/<step-id>-<slug>/out/<file>
-lab/*/out/
-lab/*/.tmp/
+# Lab outputs and scratch — raw provider responses, ratings sheets in progress, caches
+lab/**/out/
+lab/**/data/private/
+lab/**/.cache/
 
-# ── Docs pipeline scratch ────────────────────────────────────────────────────
-# render-diagrams.py works in a .tmp/ folder beside the documents (0.6 gotcha).
+# Docs pipeline scratch (Mermaid sources extracted for rendering; Word lock files)
 docs/deliverables/.tmp/
+docs/deliverables/out/~$*
 
-# ── Tool caches & local environments ─────────────────────────────────────────
+# Tooling caches — the docs template uses Python; the diagram renderer uses Node
 __pycache__/
-*.py[cod]
+*.pyc
 .venv/
 venv/
 node_modules/
 
-# ── OS & editor noise ────────────────────────────────────────────────────────
-.DS_Store
-Thumbs.db
-desktop.ini
-*.swp
-.idea/
+# IDE and OS
+.vs/
 .vscode/
+.idea/
+*.user
+*.suo
+Thumbs.db
+.DS_Store
+*.log

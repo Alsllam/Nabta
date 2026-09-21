@@ -1,23 +1,25 @@
-# Line endings: store LF in history for everything git detects as text (`text=auto`),
-# and pin the exceptions explicitly. Without this, a Windows checkout and a Linux
-# checkout of the same file can differ byte-for-byte and pollute every diff.
-* text=auto
+# Line endings: store LF, check out LF, everywhere. Ends the "LF will be replaced by CRLF"
+# noise from Windows' core.autocrlf and keeps diffs clean across editors.
+* text=auto eol=lf
 
-# Prose, data and scripts: LF in history and in the working tree.
-*.md   text eol=lf
-*.json text eol=lf
-*.py   text eol=lf
-*.lua  text eol=lf
-*.yml  text eol=lf
-*.yaml text eol=lf
+# Windows PowerShell 5.1 runs LF scripts fine; keep them LF too.
+*.ps1 text eol=lf
 
-# PowerShell is Windows-native: CRLF in the working tree (LF in history is fine,
-# but legacy hosts read CRLF most reliably).
-*.ps1  text eol=crlf
-
-# Binary artefacts: never end-of-line converted, never diffed or merged as text.
+# Binary deliverables and assets — never diffed as text, never normalised.
 *.docx binary
 *.png  binary
 *.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pdf  binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+
+# Audio is binary and, in this repo, also ignored (see .gitignore) — listed here for the rare
+# consented sample that an experiment README explicitly keeps.
 *.wav  binary
 *.mp3  binary
+*.m4a  binary
+*.ogg  binary
+*.flac binary
