@@ -53,7 +53,10 @@ Execute exactly **one** roadmap step end-to-end. Never two, unless the user expl
    must be real ones from this session; for study steps, "What this means for Nabta" is
    mandatory and the experiment's headline number appears in it.
 7. **Tick the checkbox** in ROADMAP.md.
-8. **Commit** everything from this step as one commit:
+8. **Present, then wait.** Show `git diff --stat` and a short summary of what changed and why
+   (the diff is part of the lesson), and **stop**. Commit only when the developer says so —
+   unless they said "commit directly" for this step or session. Then commit everything from
+   this step as one commit:
 
    ```
    step(<id>): <imperative subject>

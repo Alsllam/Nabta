@@ -30,7 +30,8 @@ explanation. Never reveal the answer first.
    - Confirm the phase's deliverable docs (`docs/PLAN.md` §10) were updated and, for a study
      phase, that every choice the phase was meant to make has an ADR in `docs/decisions/`.
      Anything missing becomes the first step of the next phase.
-   - Commit: `checkpoint(<phase>): passed` with a `Gaps:` line in the body if any.
+   - Show the changes and, on the developer's go (or if they said "commit directly"), commit:
+     `checkpoint(<phase>): passed` with a `Gaps:` line in the body if any.
 5. On a clear fail, don't close the phase. Log the attempt in `checkpoints.md`, point to what to
    review, and suggest retrying next session — spaced retrieval beats immediate retry.
 

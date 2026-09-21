@@ -38,7 +38,9 @@ language, interests, family and pets for stories). The child then meets Nabta ev
 child can do, and a story generated for that child — starring them, written only with the letters
 and words they can read today — followed by a small celebration. Every answer, read-aloud attempt
 and traced letter updates a per-skill mastery model; the next session is planned from it. Parents
-get a weekly report in plain Arabic with one five-minute offline activity.
+get a weekly report in plain Arabic with one five-minute offline activity, and can ask Nabta how
+to help — answers grounded in the pedagogy, the parent guide and the child's own state, with
+sources shown, never in free generation.
 
 **Operator.** One developer. Technology choices are open: Phases 1–5 study AI from first
 principles and choose each component by experiment. The product must be cheap to run and must
@@ -73,6 +75,7 @@ complete a full session without a network connection.
 | UC-08 | Parent dashboard and weekly report: mastery map, time, streak, struggling skills, one offline activity; settings | 9 |
 | UC-09 | Admin: edit skill graph and templates, review flagged content, run evals, watch usage and caps | 9 |
 | UC-10 | Export or delete a child's data | 10 |
+| UC-11 | Parent assistant: a parent asks about their child's learning («كيف أساعد ماسة في ن/ت؟»); the answer is generated from retrieved passages of the pedagogy, the parent guide, the activity library and the child's mastery state, with sources shown; adult-facing only, never inside the child experience | 9 |
 
 ## 3. The tutor's brain — pedagogy (domain, not technology)
 
@@ -117,6 +120,9 @@ offer a break; respect the parent's time limit; always end with a success.
 | 1 — templates | Parameterised from the skill's content scope and the learner model; instant, safe, offline; the bulk of a session | `letter-tap`, `letter-trace`, `syllable-blend`, `word-build`, `count-tap`, `number-trace`, `compare`, `add-objects`, `read-aloud` |
 | 2 — generated | Written by a model under constraints (letter set, vocabulary, length, interests, story cast), then validated and safety-checked before a child sees it | `story`, `word-problem`, `dialogue` |
 
+Generated story illustrations (images) are studied in C3 and are **not** in v1 scope; the decision
+follows that experiment.
+
 ### 3.5 Assessment and adaptation
 
 Touch answers are exact. Read-aloud yields per-word evidence with a confidence floor below which
@@ -138,17 +144,23 @@ Each study step produces four things: a **concept note** in the developer's own 
 (`docs/decisions/`). Experiments are small and measured; a native-speaker rating (the developer)
 counts as a measurement for Arabic quality as long as the sample and rubric are written down.
 
+The Pluralsight course *The OpenAI API* is read alongside Modules A–E; every API concept it covers
+(structured outputs, conversation state, caching, reasoning models, images, vision, speech,
+real-time, fine-tuning, function calling, built-in tools, batch, usage, agents, errors,
+moderation) has an experiment below, and its lectures are cross-referenced in §11. A concept
+enters the product the same way as any other: by winning its experiment and getting an ADR.
+
 ### Module A — Foundations of modern AI (Phase 1)
 
 | Step | Concept | Experiment | Nabta question |
 | --- | --- | --- | --- |
 | A1 | What a language model is: tokens, next-token prediction, context window, sampling, why it hallucinates | Tokenise the same Arabic and English passage with three tokenisers; tokens per word | How much more does Arabic cost, and what does that change? |
 | A2 | The model landscape: open-weights vs hosted APIs, sizes, quantisation, what runs on a laptop / phone / server; Arabic benchmarks | Same prompt on one small local model and two hosted models; latency, cost, Arabic quality | Which class of model can write a child's story? |
-| A3 | Prompting as programming: roles, few-shot, constraints, structured output (schemas), refusals | Constrained Arabic story with an allowed letter set; compliance rate by model and temperature | Can a prompt alone keep a story inside a letter set? |
-| A4 | Embeddings and retrieval: similarity, when retrieval helps and when it does not | Embed a graded word list; nearest neighbours for "words a level-3 child can read" | Does retrieval help pick vocabulary? |
+| A3 | Prompting as programming: roles, few-shot, constraints, structured output (schemas), refusals; multi-turn repair with conversation state; prompt caching; reasoning models as a candidate class | Constrained Arabic story with an allowed letter set and harakat; compliance rate by model and temperature, one-shot vs a validator-driven repair loop; cost with and without prompt caching; a reasoning model beside a standard one | Can a prompt alone keep a story inside a letter set — and what do a repair loop and caching change in compliance and cost? |
+| A4 | Embeddings and retrieval: similarity, vector indexes, retrieval-augmented generation (RAG), when retrieval helps and when an exact filter is the right tool | (a) Embed a graded word list; nearest neighbours for themed words a level-3 child can read, versus hand-tagged themes. (b) The parent assistant (UC-11): 30 parent questions answered with retrieval over the pedagogy, parent guide, activity library and a synthetic child state, versus no retrieval; grounded accuracy and citation rate rated; a hosted file-search tool beside a hand-built index | Does retrieval help pick vocabulary, and does grounding make parent answers more accurate? |
 | A5 | Adapting models: prompting vs fine-tuning vs LoRA vs distillation; data needs and costs | Fine-tune a small model on ~200 synthetic constrained stories; compliance vs prompting | Is fine-tuning worth it for constraint compliance? |
-| A6 | Evaluation: eval sets as the unit tests of AI, model-as-judge and its limits, regression | An eval harness for A3 rerun across models | What is our first eval suite? |
-| A7 | Agents and tool use: function calling, loops, when *not* to use an agent | A tiny tool-calling loop; compare with a hand-written state machine for a session | Is a session an agent or a state machine? |
+| A6 | Evaluation: eval sets as the unit tests of AI, model-as-judge and its limits, regression | An eval harness for A3 rerun across models; a reasoning model as judge beside a standard one, agreement with the native-speaker rating | What is our first eval suite? |
+| A7 | Agents and tool use: function calling, loops, agent frameworks, when *not* to use an agent | The curriculum authoring agent: a hand-written tool-calling loop (`decompose`, `check_dag`, `is_known`) proposing 50 content items, versus plain prompting with post-validation, versus the same loop on an agents SDK; acceptance rate after review; compared with a hand-written state machine for the session | Is a session an agent or a state machine — and where does an agent loop earn its place? |
 
 **Checkpoint A:** "Why does Arabic cost more tokens than English, and what did that change in the design?"
 
@@ -159,7 +171,7 @@ counts as a measurement for Arabic quality as long as the sample and rubric are 
 | B1 | How text-to-speech works: text → phonemes → acoustic model → vocoder; neural TTS; voice cloning. Arabic: diacritisation decides pronunciation | 20 sentences with and without harakat on three or four engines (open and hosted); blind native-speaker rating | Which voice can a child listen to for ten minutes, and what text must it receive? |
 | B2 | How speech recognition works: features, encoder/decoder, CTC vs attention, word timestamps; why child speech is harder | Recordings of read words and sentences on three engines; word error rate per engine | Can any engine hear a six-year-old read Arabic? |
 | B3 | Reading assessment: forced alignment, phoneme scoring, pronunciation-assessment services, confidence | Align a known target text to audio; per-word match; find the confidence floor | Where does "no evidence" beat "wrong"? |
-| B4 | Streaming and latency: real-time vs batch, on-device speech, audio caching | End-to-end latency prompt → speech → playback; cache hit rate on a session's text | What must be pre-generated before a session starts? |
+| B4 | Streaming and latency: real-time vs batch, bidirectional real-time speech APIs, on-device speech, audio caching | End-to-end latency prompt → speech → playback; cache hit rate on a session's text; live read-aloud feedback through a real-time speech API versus batch scoring — latency and cost | What must be pre-generated before a session starts, and does live feedback earn its cost? |
 
 **Checkpoint B:** "Why must text sent to speech synthesis be fully diacritised, and where in the pipeline does that happen?"
 
@@ -169,6 +181,7 @@ counts as a measurement for Arabic quality as long as the sample and rubric are 
 | --- | --- | --- | --- |
 | C1 | Online (stroke) vs offline (image) handwriting recognition; template matching (DTW), stroke order; small on-device models | Capture strokes for five letters; DTW score vs template; then an image classifier on the rendered strokes | Strokes or pixels for a tracing activity? |
 | C2 | Vision-language models: what they can judge, cost and latency | A vision model rates "is this a well-traced ب?"; agreement with the DTW score | Does a model add anything over geometry here? |
+| C3 | Image generation: diffusion models, style consistency across a series, safety of generated images, cost | 20 illustrations for 20 constrained stories in one house style; consistency and child-appropriateness rated blind; a vision model as a second safety check; cost per story | Do story illustrations earn their cost, and can they be made safe by construction? *(deferred from v1; decided after this experiment)* |
 
 **Checkpoint C:** "Stroke data or an image — which does a tracing activity need, and why?"
 
@@ -190,10 +203,10 @@ counts as a measurement for Arabic quality as long as the sample and rubric are 
 
 | Step | Concept | Experiment | Nabta question |
 | --- | --- | --- | --- |
-| E1 | Guardrails: input/output classifiers, allow-lists, constrained decoding; why a prompt is not a safety boundary | 50 red-team prompts through the story pipeline; leakage rate per layer | Which layer catches what? |
-| E2 | Children's data: minimisation, consent, retention, what may leave the device or server | A data-flow map of one session; classify every field | What must never leave the device? |
-| E3 | Where inference runs: on-device, self-hosted server, hosted APIs; latency, cost, privacy | Cost model for 1,000 children × one session/day under each option | What does a session cost, and where? |
-| E4 | Observability for AI: logging, tracing, caps, evals in CI | A usage ledger and a cap on the A3 harness | What do we watch weekly? |
+| E1 | Guardrails: input/output classifiers, hosted moderation services, allow-lists, constrained decoding; why a prompt is not a safety boundary | 50 red-team prompts through the story pipeline; leakage rate per layer — allow-list validators, a hosted moderation service, human review sampling | Which layer catches what? |
+| E2 | Children's data: minimisation, consent, retention, what may leave the device or server | A data-flow map of one session and of one parent-assistant question; classify every field | What must never leave the device? |
+| E3 | Where inference runs: on-device, self-hosted server, hosted APIs; batch (deferred) processing at reduced price; latency, cost, privacy | Cost model for 1,000 children × one session/day under each option, with the nightly pack built through a batch API versus on demand | What does a session cost, and where? |
+| E4 | Observability for AI: logging, tracing, caps, provider usage APIs, error handling and fallback, evals in CI | A usage ledger and a cap on the A3 harness fed from the provider's usage API; a fault drill — rate limit, timeout, connection error — that must end in a template fallback | What do we watch weekly, and what does the child see when the provider fails? |
 | E5 | **Stack decision** | One ADR per component in §8, each citing the experiment that decided it; Architecture & DB v0.1 written from the ADRs | — |
 
 **Checkpoint E:** "If the hosted model's price doubled tomorrow, which component would you move first, and what would the child notice?"
@@ -203,15 +216,15 @@ counts as a measurement for Arabic quality as long as the sample and rubric are 
 | # | Phase | Outcome | Checkpoint question |
 | --- | --- | --- | --- |
 | 0 | Bootstrap & docs foundation | Repo, plan, Vision, **Pedagogy v0.1** (skill graph on paper + JSON seed), SRS v0.1, capability architecture v0.1 (no products named) | Name the capabilities in §6 and explain why a child is not a user account. |
-| 1 | Study — AI foundations (Module A) | Concept notes A1–A7, lab experiments, first eval suite, ADRs on model class and prompting approach | Checkpoint A |
+| 1 | Study — AI foundations (Module A) | Concept notes A1–A7, lab experiments, first eval suite, ADRs on model class, prompting approach and retrieval | Checkpoint A |
 | 2 | Study — Speech (Module B) | Notes B1–B4, engine comparisons, ADRs on synthesis, recognition and assessment | Checkpoint B |
-| 3 | Study — Vision & handwriting (Module C) | Notes C1–C2, tracing prototype, ADR on handwriting scoring | Checkpoint C |
+| 3 | Study — Vision & handwriting (Module C) | Notes C1–C3, tracing prototype, ADR on handwriting scoring, decision on story illustrations | Checkpoint C |
 | 4 | Study — Adaptive learning (Module D) | Notes D1–D7, simulator, ADR on the learner model and H1/H2 | Checkpoint D |
 | 5 | Study — Safety, deployment, cost → **stack decision** (Module E) | Notes E1–E4, data-flow map, cost model, one ADR per component, Architecture & DB v0.1 | Checkpoint E |
 | 6 | Build — tutor core | Curriculum store + seeder, learner model, scheduler, session engine, offline-capable API | How does the scheduler choose between a due review and a frontier skill? |
 | 7 | Build — child experience v1 | Child picker, session flow, three template activities, cached audio, offline pack, rewards | Where does the tracing canvas state live, and what syncs when the network returns? |
 | 8 | Build — content & speech | Constrained story generation with validators and safety filter, synthesis cache, read-aloud scoring, handwriting scoring, evals | A generated story contains a word outside the allowed letter set — where is it caught and what does the child see? |
-| 9 | Build — parent & admin | Onboarding + consent, dashboard, weekly report, curriculum and template editors, review queue, evals dashboard, observability | What three signals would tell you story quality dropped this week? |
+| 9 | Build — parent & admin | Onboarding + consent, dashboard, weekly report, parent assistant (UC-11), curriculum and template editors, review queue, evals dashboard, observability | What three signals would tell you story quality dropped this week? |
 | 10 | Hardening & child safety | Consent audit, minimisation review, export/delete, rate limits, encryption of recordings, red-team evals as regression tests, `privacy` doc | Where does a child's voice recording live, for how long, and who can read it? |
 | 11 | Pilot & publish | 10-family pilot with pre/post test, iterate, landing page, listing, open-source core | What did the pre/post test measure, and what result would have made you stop? |
 | 12 | Toward the Primer | Long-term memory across years, guided comprehension dialogues, English track, dialect-aware speech, teacher mode, sibling play | — |
@@ -222,17 +235,19 @@ Phases 1–5 are sequential by design: each module's ADRs are inputs to the next
 ## 6. Capability architecture (technology-neutral)
 
 ```
- Child experience ──┐                 ┌─ Language model(s)      — content generation only
+ Child experience ──┐                 ┌─ Language model(s)      — content generation; grounded parent answers
  Parent surface     ├──► Tutor core ──┤─ Speech synthesis      — cached per text + voice
  Admin surface      ┘       │         ├─ Speech recognition    — read-aloud evidence
-                            │         └─ Handwriting scoring   — stroke-based
+                            │         ├─ Handwriting scoring   — stroke-based
+                            │         └─ Retrieval index       — pedagogy, guide, activities (parent assistant)
                             ├─ Curriculum store   skill graph, templates, content items, word lists
                             ├─ Learner model      mastery + retention per (child, skill), evidence log
                             ├─ Scheduler          due reviews → frontier → rules → session plan
                             ├─ Content service    generate → validate → safety → cache → review
                             ├─ Speech service     synthesis, recognition, alignment, recording lifecycle
-                            └─ Platform           parent identity, storage, background jobs, AI gateway
-                                                  (routing, caps, usage ledger), observability
+                            ├─ Parent assistant   question → retrieve → answer with sources (adult-facing)
+                            └─ Platform           parent identity, storage, background jobs (nightly pack
+                                                  build), AI gateway (routing, caps, usage ledger), observability
 ```
 
 Rules that hold whatever the stack turns out to be:
@@ -263,7 +278,8 @@ Rules that hold whatever the stack turns out to be:
   Generated / Validated / Flagged / Approved / Rejected, validation report, model, cost) ·
   `ReviewItem` · `AudioAsset` (text hash, voice, provider, blob, duration) · `ActivityPack`
 - **Speech:** `Recording` (child, attempt, blob, retain-until, transcript, alignment, status)
-- **Reports:** `WeeklyReport` (child, week, content, sent at)
+- **Reports:** `WeeklyReport` (child, week, content, sent at) · `ParentQuery` (parent, child,
+  question, retrieved sources, answer, model, cost, asked at, feedback)
 - **AI gateway:** `Usage` (who, provider, model, purpose, tokens, latency) · `Prompt` (name,
   version, body, hash) · `EvalRun` (suite, prompt version, model, scores)
 
@@ -279,7 +295,10 @@ Rules that hold whatever the stack turns out to be:
 | Speech recognition and reading assessment | Open ASR models · hosted ASR · pronunciation-assessment services · forced alignment | B2, B3 |
 | Handwriting scoring | Stroke template matching · small on-device classifier · vision model | C1, C2 |
 | Learner model and scheduler | BKT · IRT/Elo · DKT · SM-2/FSRS; engineered scheduler vs model-as-tutor | D2–D7 |
-| Safety layer | Output classifiers · allow-list validators · constrained decoding · human review sampling | E1 |
+| Safety layer | Output classifiers · hosted moderation services · allow-list validators · constrained decoding · human review sampling | E1 |
+| Retrieval for the parent assistant | No retrieval (long context) · hand-built embedding index · hosted file-search tool | A4, E3 |
+| Story illustrations *(deferred from v1)* | None · generated images in a house style with a vision safety check | C3 |
+| Nightly pack generation | On demand · provider batch API at reduced price | E3 |
 | Where inference runs | On-device · self-hosted server · hosted APIs, per component | E3 |
 | Child experience platform | Native mobile · cross-platform toolkit · web app; must do audio, strokes, offline | E5 |
 | Backend, storage, jobs, identity | Chosen at E5 from the requirements the study produced | E5 |
@@ -291,7 +310,7 @@ Rules that hold whatever the stack turns out to be:
 | --- | --- | --- |
 | P-1 | One operator; cheap to run; one deployable | Same constraint as Wathiq; keeps scope honest |
 | P-2 | Arabic first: MSA with full harakat for early reading; Eastern or Western numerals per child | Matches school; harakat are the vowels a beginner needs |
-| P-3 | No open-ended chat with the child in v1 | Safety and scope; every child-facing text is constrained and validated |
+| P-3 | No open-ended chat with the child in v1 | Safety and scope; every child-facing text is constrained and validated. The parent assistant (UC-11) is adult-facing and grounded in curated documents |
 | P-4 | Pedagogy must be explainable to a parent (H1 is the working hypothesis, tested in D7) | Trust; testability |
 | P-5 | Child data minimisation; recordings have a time-to-live | Children's-privacy law and parental trust |
 | P-6 | Way of working from Wathiq: one step = one commit = one learning note; checkpoints gate phases; deliverables as Markdown rendered to `.docx` | Proven with this developer; documents travel with the code |
@@ -332,15 +351,20 @@ Rules that hold whatever the stack turns out to be:
 - **A** — Vaswani et al., *Attention Is All You Need* (read for the ideas, not the math);
   Karpathy, *Intro to Large Language Models* and *Let's build the GPT Tokenizer*; a tokenizer
   playground for Arabic; provider prompt-engineering guides; Anthropic, *Building Effective
-  Agents*; a survey of Arabic LLM benchmarks
+  Agents*; a survey of Arabic LLM benchmarks; Pluralsight, *The OpenAI API* (E. Herrera) —
+  lectures 1.3–1.5 (keys, environment, models), 2.1–2.6 (model selection, Responses API,
+  conversation state, prompt caching, structured outputs, reasoning models), 4.1–4.3 and 4.6
+  (fine-tuning, function calling, built-in tools, agents SDK)
 - **B** — Radford et al., *Robust Speech Recognition via Large-Scale Weak Supervision* (Whisper);
   an overview of neural TTS (Tacotron → VITS → current); Montreal Forced Aligner docs; papers on
-  Arabic diacritisation and on children's ASR
+  Arabic diacritisation and on children's ASR; *The OpenAI API* lectures 3.3–3.5 (text to
+  speech, speech to text, real-time)
 - **C** — Online handwriting recognition surveys; dynamic time warping tutorials; a vision-language
-  model overview
+  model overview; *The OpenAI API* lectures 3.1–3.2 (image generation, vision)
 - **D** — Corbett & Anderson, *Knowledge Tracing* (1995); Piech et al., *Deep Knowledge Tracing*
   (2015); FSRS algorithm write-up; SM-2; Koedinger's Knowledge-Learning-Instruction framework;
   Science-of-Reading primers; research on harakat and diglossia in Arabic early literacy; KSA
   Ministry of Education KG and Grade 1–2 standards
 - **E** — OWASP LLM Top 10; COPPA, GDPR-K and KSA PDPL provisions on children's data; model
-  pricing pages and quantisation guides for the cost model
+  pricing pages and quantisation guides for the cost model; *The OpenAI API* lectures 4.4–4.5
+  (batch, usage) and 5.1–5.2 (errors, moderation)

@@ -51,11 +51,14 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
 ## Phase 1 — Study: AI foundations (Module A)  *(expand at start)*
 
 A1 tokens and cost of Arabic · A2 model landscape (local small / server open-weights / hosted) ·
-A3 prompting and structured output with the constrained-story experiment · A4 embeddings and
-retrieval · A5 adapting models (prompting vs fine-tuning vs LoRA) · A6 evaluation and the first
-eval suite · A7 agents vs state machines. Step 1.1 also sets up the lab runtime (ADR-001: the
-language and environment experiments are written in — chosen for how fast we learn, nothing else).
-*Topics: how language models work, prompting, structured output, embeddings, fine-tuning, evals.*
+A3 prompting, structured output, the validator-driven repair loop, prompt caching and reasoning
+models with the constrained-story experiment · A4 embeddings, retrieval and RAG — themed
+vocabulary and the parent assistant (UC-11) · A5 adapting models (prompting vs fine-tuning vs
+LoRA) · A6 evaluation and the first eval suite, model-as-judge · A7 agents vs state machines: the
+curriculum authoring agent with function calling, hand loop vs agents SDK. Step 1.1 also sets up
+the lab runtime (ADR-001: the language and environment experiments are written in — chosen for how
+fast we learn, nothing else). *Topics: how language models work, prompting, structured output,
+conversation state, caching, embeddings, RAG, fine-tuning, evals, tool use.*
 
 - [ ] 1.0 Expand phase into steps
 - [ ] 1.CP Checkpoint A — "Why does Arabic cost more tokens than English, and what did that change in the design?"
@@ -64,8 +67,9 @@ language and environment experiments are written in — chosen for how fast we l
 
 B1 speech synthesis and Arabic diacritisation, engine comparison with blind rating · B2 speech
 recognition and child speech, word-error-rate comparison · B3 reading assessment: forced
-alignment, per-word scoring, the confidence floor · B4 latency, streaming, caching.
-*Topics: TTS and ASR internals, alignment, confidence, latency budgets.*
+alignment, per-word scoring, the confidence floor · B4 latency, streaming, caching, and live
+read-aloud feedback through a real-time speech API versus batch.
+*Topics: TTS and ASR internals, alignment, confidence, latency budgets, real-time speech.*
 
 - [ ] 2.0 Expand phase into steps
 - [ ] 2.CP Checkpoint B — "Why must text sent to speech synthesis be fully diacritised, and where in the pipeline does that happen?"
@@ -73,8 +77,9 @@ alignment, per-word scoring, the confidence floor · B4 latency, streaming, cach
 ## Phase 3 — Study: Vision & handwriting (Module C)  *(expand at start)*
 
 C1 stroke vs image recognition, DTW template scoring prototype · C2 vision-language models as
-judges, agreement with geometry. *Topics: online handwriting recognition, template matching,
-vision models.*
+judges, agreement with geometry · C3 image generation for story illustrations — style
+consistency, safety, cost (deferred from v1; decided here). *Topics: online handwriting
+recognition, template matching, vision models, image generation.*
 
 - [ ] 3.0 Expand phase into steps
 - [ ] 3.CP Checkpoint C — "Stroke data or an image — which does a tracing activity need, and why?"
@@ -91,10 +96,13 @@ session planning · D7 the H1 vs H2 simulation with 1,000 synthetic learners.
 
 ## Phase 5 — Study: Safety, deployment, cost → stack decision (Module E)  *(expand at start)*
 
-E1 guardrail layers and the red-team set · E2 data-flow map and minimisation · E3 where
-inference runs and the cost model · E4 observability and caps · E5 one ADR per component in
-PLAN §8.1, then Architecture & DB v0.1 written from the ADRs.
-*Topics: guardrails, children's data, inference economics, observability, decision records.*
+E1 guardrail layers (allow-list validators, hosted moderation, review sampling) and the red-team
+set · E2 data-flow map and minimisation · E3 where inference runs and the cost model, batch vs
+on-demand pack generation · E4 observability, usage ledger from the provider's usage API, caps,
+and the fault drill that must end in a template fallback · E5 one ADR per component in PLAN §8.1,
+then Architecture & DB v0.1 written from the ADRs.
+*Topics: guardrails, moderation, children's data, inference economics, batch processing,
+observability, error handling, decision records.*
 
 - [ ] 5.0 Expand phase into steps
 - [ ] 5.CP Checkpoint E — "If the hosted model's price doubled tomorrow, which component would you move first, and what would the child notice?"
@@ -125,8 +133,8 @@ recording lifecycle, eval suites in CI.
 ## Phase 9 — Build: parent & admin  *(expand after Phase 5)*
 
 Onboarding + consent, child profiles and story cast, dashboard with mastery map, weekly report,
-settings; curriculum and template editors, content review queue, evals dashboard, usage;
-observability and backups.
+the parent assistant (UC-11: grounded answers with sources), settings; curriculum and template
+editors, content review queue, evals dashboard, usage; observability and backups.
 
 - [ ] 9.0 Expand phase into steps
 

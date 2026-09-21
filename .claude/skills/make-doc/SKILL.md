@@ -71,8 +71,9 @@ not a stack choice.
    samples are fully diacritised.
 4. **Render** with the build script (`docs/deliverables/_template/build.ps1 <key>`). Open
    nothing; verify the file exists and is non-trivial in size. Report any warnings.
-5. **Commit**: `doc(<key>): <what changed>` — stage the `.md`, assets, the `.docx`, and for
-   `pedagogy` the matching `skills.*.json`.
+5. **Present, then commit on the developer's go**: show the diff summary and stop; when they
+   agree (or said "commit directly"), commit `doc(<key>): <what changed>` — stage the `.md`,
+   assets, the `.docx`, and for `pedagogy` the matching `skills.*.json`.
 6. **Hand back**: path of the `.md` and `.docx`, version number, and what is still marked
    *Planned* so the next phase knows what to fill in.
 

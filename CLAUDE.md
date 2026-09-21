@@ -33,6 +33,8 @@ against the alternatives, and is recorded in an ADR — or it does not enter the
 ## The workflow — non-negotiable rules
 
 1. **One roadmap step = one commit.** Never bundle two steps; never commit a half-done step.
+   **The commit waits for the developer's review of the diff** — present the changes and stop;
+   commit only on their go, unless they said "commit directly". Every diff is a lesson to read.
 2. **Every step ships a learning doc** at `docs/learning/<step-id>-<slug>.md` following
    `docs/learning/TEMPLATE.md`, written *with* the work, in the developer's own words.
 3. **Study steps (Phases 1–5) ship four things:** the concept note, a runnable experiment in
