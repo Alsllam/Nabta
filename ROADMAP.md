@@ -35,7 +35,7 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
       with existing prerequisites, and prints the frontier for example learners (the first
       `lab/` artefact). `docs/curriculum/README.md` documents the format. *Topics: modelling a
       DAG as data, templates vs instances, threshold prerequisites, mastery criteria you can test.*
-- [ ] **0.4b Pedagogy v0.1 document** — `docs/deliverables/pedagogy.md` → `.docx`: the skill
+- [x] **0.4b Pedagogy v0.1 document** — `docs/deliverables/pedagogy.md` → `.docx`: the skill
       model in prose (stages, groups, the letter growth stages the garden shows), session shape
       by age band, scheduler rules (name-letters entry, confusable spacing, one new skill,
       reviews first, end on success, the structured reason for G8), adaptation levers, assessment
