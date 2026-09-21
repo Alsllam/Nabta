@@ -22,7 +22,7 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
 - [x] **0.2 Docs pipeline** — copy `docs/deliverables/_template/` (reference `.docx`, build and
       diagram scripts) and `deliverables/README.md` from Wathiq; render a smoke doc with Arabic
       RTL text. *Topics: the Markdown → Word pipeline (a documents tool, not a stack choice).*
-- [ ] **0.3 Vision & Charter doc** — `docs/deliverables/vision.md` → `.docx`: problem, users,
+- [x] **0.3 Vision & Charter doc** — `docs/deliverables/vision.md` → `.docx`: problem, users,
       product principles (PLAN §9), scope & non-goals, success metrics for study / pilot / product,
       operating model, risks, roadmap summary. *Topics: charter for a child-facing product;
       non-goals as safety scope.*
