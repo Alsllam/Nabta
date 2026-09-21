@@ -1,0 +1,25 @@
+# Line endings: store LF, check out LF, everywhere. Ends the "LF will be replaced by CRLF"
+# noise from Windows' core.autocrlf and keeps diffs clean across editors.
+* text=auto eol=lf
+
+# Windows PowerShell 5.1 runs LF scripts fine; keep them LF too.
+*.ps1 text eol=lf
+
+# Binary deliverables and assets — never diffed as text, never normalised.
+*.docx binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pdf  binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+
+# Audio is binary and, in this repo, also ignored (see .gitignore) — listed here for the rare
+# consented sample that an experiment README explicitly keeps.
+*.wav  binary
+*.mp3  binary
+*.m4a  binary
+*.ogg  binary
+*.flac binary

@@ -1,0 +1,46 @@
+# Nabta — what never enters git.
+# Some of these lines are privacy boundaries, not tidiness: recordings are ephemeral by
+# principle (P6), keys never leave the machine, lab outputs may contain provider responses.
+
+# Secrets — keys are read only inside lab/ from environment variables
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Audio and recordings — never committed (consented samples an experiment keeps are the
+# documented exception, added with `git add -f` and named in that experiment's README)
+*.wav
+*.mp3
+*.m4a
+*.ogg
+*.flac
+*.webm
+recordings/
+
+# Lab outputs and scratch — raw provider responses, ratings sheets in progress, caches
+lab/**/out/
+lab/**/data/private/
+lab/**/.cache/
+
+# Docs pipeline scratch (Mermaid sources extracted for rendering; Word lock files)
+docs/deliverables/.tmp/
+docs/deliverables/out/~$*
+
+# Tooling caches — the docs template uses Python; the diagram renderer uses Node
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+
+# IDE and OS
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+Thumbs.db
+.DS_Store
+*.log

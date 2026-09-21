@@ -1,0 +1,28 @@
+# EditorConfig — https://editorconfig.org
+# One convention for every file type in the repo, whatever the stack turns out to be.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.md]
+# Two trailing spaces are a hard line break in Markdown; keep them.
+trim_trailing_whitespace = false
+max_line_length = 100
+
+[*.{py,ps1}]
+indent_size = 4
+
+[*.json]
+indent_size = 2
+
+[*.{docx,png,jpg,wav,mp3,m4a,ogg}]
+# Binary: no text rules apply.
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset

@@ -51,7 +51,7 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
       view (capabilities, no products), the module rules, the event map, and three key flows
       (daily session, story generation, read-aloud scoring). Marked *products decided in Phase 5*.
       *Topics: designing to capabilities and contracts before choosing tools.*
-- [ ] **0.7 Repo layout & tooling** — `lab/`, `docs/curriculum/`, and placeholder READMEs for
+- [x] **0.7 Repo layout & tooling** — `lab/`, `docs/curriculum/`, and placeholder READMEs for
       the future `core/`, `child-app/`, `web/` folders (names are provisional until Phase 5);
       `.editorconfig`, `.gitattributes`, `.gitignore` (secrets, audio, recordings, lab outputs),
       `.env.example` for API keys used only inside `lab/`. *Topics: a repo that can hold a study
