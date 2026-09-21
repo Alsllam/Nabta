@@ -26,12 +26,23 @@ curriculum, the requirements and the capabilities. Technology arrives in Phases 
       product principles (PLAN §9), scope & non-goals, success metrics for study / pilot / product,
       operating model, risks, roadmap summary. *Topics: charter for a child-facing product;
       non-goals as safety scope.*
-- [ ] **0.4 Pedagogy v0.1** — `docs/deliverables/pedagogy.md` → `.docx`: three domains, ~120
-      skills with stable codes (`R-…`, `W-…`, `A-…`), prerequisites, content scope, mastery
-      criteria; session shape; scheduler rules; adaptation levers; assessment rules; the tier-1
-      activity catalogue with parameters. Plus `docs/curriculum/skills.v0.1.json` and a small
-      script that checks the JSON is a DAG (the first `lab/` artefact). *Topics: curriculum
-      design, modelling a DAG as data, mastery criteria you can test.*
+- [x] **0.4a Skill model & graph seed** — `docs/curriculum/skills.v0.1.json`: three domains,
+      stages, the 28 letters with a default introduction order, per-letter skill *kinds*
+      (shape, sound, three harakat sub-skills, joining, trace, write, join) expanded × letters,
+      plus concept nodes with threshold prerequisites, discrimination pairs, words, sentences,
+      pre-writing and arithmetic (~85 authored entries → ~330 nodes); stable ASCII codes;
+      named mastery rules. `lab/0.4-skill-graph/check_graph.py` expands it, checks it is a DAG
+      with existing prerequisites, and prints the frontier for example learners (the first
+      `lab/` artefact). `docs/curriculum/README.md` documents the format. *Topics: modelling a
+      DAG as data, templates vs instances, threshold prerequisites, mastery criteria you can test.*
+- [ ] **0.4b Pedagogy v0.1 document** — `docs/deliverables/pedagogy.md` → `.docx`: the skill
+      model in prose (stages, groups, the letter growth stages the garden shows), session shape
+      by age band, scheduler rules (name-letters entry, confusable spacing, one new skill,
+      reviews first, end on success, the structured reason for G8), adaptation levers, assessment
+      rules (confidence floor, generous handwriting), the tier-1 activity catalogue with
+      parameters, the two story kinds and their brief, template stories, the parent-facing
+      progress view, glossary ar/en. *Topics: curriculum design; explainability as a contract;
+      writing pedagogy that a scheduler can execute.*
 - [ ] **0.5 SRS v0.1** — actors, UC-01…UC-10 with pre/post conditions, FR per capability
       (`FR-CUR`, `FR-LRN`, `FR-TUT`, `FR-CNT`, `FR-SPC`, `FR-RPT`, `FR-AI`), NFR (child safety,
       privacy, offline, latency budgets, i18n/RTL, accessibility, cost per session), glossary ar/en.
